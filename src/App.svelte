@@ -1,31 +1,25 @@
 <script>
-  import CONFIG from "./config";
+  import Sortable from "sortablejs";
+  let num = 0;
 
-  import Router from "svelte-spa-router";
-  import Home from "./Home.svelte";
-  import Hello from "./Hello.svelte";
-  import NotFound from "./NotFound.svelte";
+  let allthings = new Array();
+  let things = new Array();
 
-  const routes = {
-    "/": Home,
-    "/hello/:name": Hello,
-    "*": NotFound
-  };
+  function newNum() {
+    num += 1;
+    allthings.push(num);
+    things = allthings;
+  }
+
+  function makeSortable(el) {
+    Sortable.create(el);
+  }
 </script>
 
-<h1>Menu</h1>
-<ul>
-  <li>
-    <a href="#/">Homepage</a>
-  </li>
-  <li>
-    <a href="#/hello/Svelte">Hello Svelte</a>
-  </li>
-  <li>
-    <a href="#/random-stuff">404</a>
-  </li>
+<button on:click={newNum}>new item</button>
+<h1>items</h1>
+<ul use:makeSortable>
+  {#each things as thing, index}
+    <li>{thing}</li>
+  {/each}
 </ul>
-<Router {routes} />
-
-<hr />
-<footer>production: {CONFIG.production}, built on: {CONFIG.date}</footer>
